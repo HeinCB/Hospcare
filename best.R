@@ -13,15 +13,29 @@ if (!(outcome %in% aan)) stop("invalid outcome")
 if (outcome==aan[2]) {i <- 11}
 if (outcome==aan[1]) {i <- 17}
 if (outcome==aan[3]) {i <- 23}
+
 ##print(aan)
 ##print(i)
+
+## select only the data from the state that was given as input
+data <- subset(data, data[,7]==state)
+
+
 ##second column in data is the Hospitalname
 l <-c(2,i)
+##make sure yy should have the column with name of the hospital and the outcome/disease to be investigated
 yy <- data[,l]
+
+##kk should now only contain combinations of hospital name and outcome that are not empty
 kk <- yy[complete.cases(yy),]
-rr <- order(kk)
-zz <- str(kk)
-print (zz)
+
+
+## now order the list with the second column defining the outcome as first argument and name of the hospital as second argument
+rr <- with(kk, kk[order(kk[,2], kk[,1]),])
+##this is just to format the output better. Else a Factor type of description would go along
+pp<-as.character(rr[1,1])
+print(pp)
+
 
 
 }
