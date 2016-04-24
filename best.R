@@ -1,7 +1,7 @@
 best <- function(state,outcome)
 {
 ## Read hospital compare data
-data <- read.csv("outcome-of-care-measures.csv") 
+data <- read.csv("outcome-of-care-measures.csv", na.strings= "Not Available", stringsAsFactors=FALSE) 
 aan <- c("heart failure","heart attack", "pneumonia")   
 
 ## Check that State and outcome are valid	
@@ -14,26 +14,25 @@ if (outcome==aan[2]) {i <- 11}
 if (outcome==aan[1]) {i <- 17}
 if (outcome==aan[3]) {i <- 23}
 
-##print(aan)
-##print(i)
-
 ## select only the data from the state that was given as input
 data <- subset(data, data[,7]==state)
-
 
 ##second column in data is the Hospitalname
 l <-c(2,i)
 ##make sure yy should have the column with name of the hospital and the outcome/disease to be investigated
 yy <- data[,l]
 
-##kk should now only contain combinations of hospital name and outcome that are not empty
-kk <- yy[complete.cases(yy),]
+yy[,2]<-as.numeric(yy[,2])
 
+
+##kk should now only contain combinations of hospital name and outcome that are not empty
+yy <- yy[complete.cases(yy),]
 
 ## now order the list with the second column defining the outcome as first argument and name of the hospital as second argument
-rr <- with(kk, kk[order(kk[,2], kk[,1]),])
+ff <- yy[order(yy[,2],yy[,1]),]
+##print(head(ff,5))
 ##this is just to format the output better. Else a Factor type of description would go along
-pp<-as.character(rr[1,1])
+pp<-as.character(ff[1,1])
 print(pp)
 
 
